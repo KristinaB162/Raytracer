@@ -1,0 +1,162 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../lib/lodePNG/lodepng.h
+string.h
+-
+vector
+-
+string
+-
+lodepng.h
+../lib/lodePNG/lodepng.h
+iostream
+-
+lodepng.h
+../lib/lodePNG/lodepng.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Camera.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Image.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+vector
+-
+assert.h
+-
+fstream
+-
+lodepng.h
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Light.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Material.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+Image.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Image.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Mesh.cpp
+Mesh.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Mesh.h
+fstream
+-
+string
+-
+cstring
+-
+sstream
+-
+map
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Mesh.h
+Object.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Object.h
+Image.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Image.h
+vector
+-
+float.h
+-
+string
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Object.h
+Ray.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Ray.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+Material.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Material.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Plane.cpp
+Plane.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Plane.h
+float.h
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Plane.h
+Object.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Object.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Ray.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Sphere.cpp
+Sphere.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Sphere.h
+float.h
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Sphere.h
+Object.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Object.h
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/StopWatch.h
+windows.h
+-
+sys/time.h
+-
+iostream
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/raytrace.cpp
+StopWatch.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/StopWatch.h
+Sphere.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Sphere.h
+Plane.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Plane.h
+Mesh.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Mesh.h
+Light.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Light.h
+Ray.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Ray.h
+Material.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Material.h
+Image.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Image.h
+Camera.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/Camera.h
+lodepng.h
+-
+vector
+-
+iostream
+-
+fstream
+-
+float.h
+-
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.cpp
+vec3.h
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+
+/mnt/d/Master Intelligente Systeme/1. Semester/Computer Graphics/Übungen/cg_raytracer/src/vec3.h
+iostream
+-
+assert.h
+-
+math.h
+-
+algorithm
+-
+
