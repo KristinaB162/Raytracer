@@ -468,6 +468,7 @@ intersect_triangle(const Triangle&  _triangle,
 
     double determinant_matrix = compute_determinant(x_vec, y_vec, z_vec);
 
+    // x for unknown t, y for unknown beta, z for unknown gamma
     double determinant_x = compute_determinant(result_vec, y_vec, z_vec);
     double determinant_y = compute_determinant(x_vec, result_vec, z_vec);
     double determinant_z = compute_determinant(x_vec, y_vec, result_vec);
@@ -476,11 +477,17 @@ intersect_triangle(const Triangle&  _triangle,
     b = determinant_y/determinant_matrix;
     c = determinant_z/determinant_matrix;
     a = 1 - b - c;
-
-    if(a,b,c >= 0 && a,b,c <= 1 && abs(a + b + c - 1) < 1e-5 && _intersection_t > 1e-5) {
+    
+    // check if:
+    // * 0 <= a, b, c <= 1
+    // * a + b + c = 1
+    // _intersectiont_t > 1e-5 (avoid shadow acne)
+    if (a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1 && abs(a + b + c - 1) < 1e-5 && _intersection_t > 1e-5) {
+        // compute intersection point from ray equation
         _intersection_point = _ray.origin + _intersection_t * _ray.direction;
 
-        if(draw_mode_ == FLAT) {
+        // get correct normal depending on _draw_mode
+        if(draw_mode_ == FLAT) {    
         _intersection_normal = _triangle.normal;
         }
         else {
