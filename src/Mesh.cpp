@@ -16,6 +16,7 @@
 #include <cstring>
 #include <sstream>
 #include <map>
+#include "Plane.h"
 
 //== IMPLEMENTATION ===========================================================
 
@@ -358,12 +359,56 @@ bool Mesh::intersect_bounding_box(const Ray& _ray) const
     * with all triangles of every mesh in the scene. The bounding boxes are computed
     * in `Mesh::compute_bounding_box()`.
     */
-   
 
-   //double denom = dot(normal, _ray.direction);
-   
+    /*
+    // intersect ray with "edges" of bounding box
+    double t_min_x = (this->bb_min_[0] - _ray.origin[0] ) / _ray.direction[0];
+    double t_min_y = (this->bb_min_[1] - _ray.origin[1] ) / _ray.direction[1];
+    double t_min_z = (this->bb_min_[2] - _ray.origin[2] ) / _ray.direction[2];
+    double t_max_x = (this->bb_max_[0] - _ray.origin[0] ) / _ray.direction[0];
+    double t_max_y = (this->bb_max_[1] - _ray.origin[1] ) / _ray.direction[1];
+    double t_max_z = (this->bb_max_[2] - _ray.origin[2] ) / _ray.direction[2];
 
-    return true;
+    //maybe ||?
+    if (t_min_x > t_max_y && t_min_x < t_min_y) {
+        return false;
+    }
+
+    if (t_max_y > t_max_x && t_min_y < t_min_x) {
+        return false;
+    }
+
+    if (t_min_x > t_min_z && t_min_z < t_max_y) {
+        return false;
+    }
+    */
+
+    // create six planes with normal vectors as other axes
+
+    Plane front = Plane(this->bb_min_, vec3(0,0,1));
+    Plane back = Plane(this->bb_max_, vec3(0,0,1));
+    Plane top = Plane(this->bb_max_, vec3(0,1,0));
+    Plane bottom = Plane(this->bb_min_, vec3(0,1,0));
+    Plane left = Plane(this->bb_min_, vec3(1,0,0));
+    Plane right = Plane(this->bb_max_, vec3(1,0,0));
+
+    vec3 _intersection_point;
+    vec3 _intersection_normal;
+    vec3 _intersection_diffuse;
+    double _intersection_t;
+    Plane all_planes[6] = {front, back, top, bottom, left, right};
+    for (Plane p: all_planes) {
+        p.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
+            //test if inside box
+            // then return true;
+            if (_intersection_point[0] >= this->bb_min_[0] && _intersection_point[0] <= this->bb_max_[0] &&
+                _intersection_point[1] >= this->bb_min_[1] && _intersection_point[1] <= this->bb_max_[1] &&
+                _intersection_point[2] >= this->bb_min_[2] && _intersection_point[2] <= this->bb_max_[2]) {
+            return true;
+            }
+    }
+
+    return false;
 }
 
 
@@ -438,7 +483,7 @@ intersect_triangle(const Triangle&  _triangle,
 {
 
     _intersection_diffuse = material.diffuse;
-
+    return true;
     /** \todo
     * Intersect _ray with _triangle:
     * - store intersection point in `_intersection_point`
@@ -488,10 +533,10 @@ intersect_triangle(const Triangle&  _triangle,
 
         // get correct normal depending on _draw_mode
         if(draw_mode_ == FLAT) {    
-        _intersection_normal = _triangle.normal;
+            _intersection_normal = _triangle.normal;
         }
         else {
-            // compute_normal()
+            //compute_normals
         }
 
         return true;
