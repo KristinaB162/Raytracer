@@ -383,30 +383,53 @@ bool Mesh::intersect_bounding_box(const Ray& _ray) const
     }
     */
 
+    vec3 min_point, max_point;    
+    min_point = min(this->bb_min_, this->bb_max_);
+    max_point = max(this->bb_min_, this->bb_max_);
+    
     // create six planes with normal vectors as other axes
-
-    Plane front = Plane(this->bb_min_, vec3(0,0,1));
-    Plane back = Plane(this->bb_max_, vec3(0,0,1));
-    Plane top = Plane(this->bb_max_, vec3(0,1,0));
-    Plane bottom = Plane(this->bb_min_, vec3(0,1,0));
-    Plane left = Plane(this->bb_min_, vec3(1,0,0));
-    Plane right = Plane(this->bb_max_, vec3(1,0,0));
+    Plane front = Plane(min_point, vec3(0,0,1));
+    Plane back = Plane(max_point, vec3(0,0,-1));
+    Plane top = Plane(max_point, vec3(0,-1,0));
+    Plane bottom = Plane(min_point, vec3(0,1,0));
+    Plane left = Plane(min_point, vec3(1,0,0));
+    Plane right = Plane(max_point, vec3(-1,0,0));
 
     vec3 _intersection_point;
     vec3 _intersection_normal;
     vec3 _intersection_diffuse;
     double _intersection_t;
-    Plane all_planes[6] = {front, back, top, bottom, left, right};
+    Plane all_planes[] = {front, back, top, bottom, left, right};
+    
     for (Plane p: all_planes) {
-        p.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
-            //test if inside box
-            // then return true;
+        bool intersect = p.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
+        //test if inside box
+        // then return true;
+        if (intersect == true) {
+            
             if (_intersection_point[0] >= this->bb_min_[0] && _intersection_point[0] <= this->bb_max_[0] &&
                 _intersection_point[1] >= this->bb_min_[1] && _intersection_point[1] <= this->bb_max_[1] &&
                 _intersection_point[2] >= this->bb_min_[2] && _intersection_point[2] <= this->bb_max_[2]) {
-            return true;
+                return true;
             }
+        } 
+    
+        _intersection_point = vec3(0,0,0);
+        _intersection_normal = vec3(0,0,0);
+        _intersection_diffuse = vec3(0,0,0);
+        _intersection_t = 0.0;
     }
+    /*bool intersect = right.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
+        //test if inside box
+        // then return true;
+        if (intersect == true) {
+            
+            if (_intersection_point[0] >= this->bb_min_[0] && _intersection_point[0] <= this->bb_max_[0] &&
+                _intersection_point[1] >= this->bb_min_[1] && _intersection_point[1] <= this->bb_max_[1] &&
+                _intersection_point[2] >= this->bb_min_[2] && _intersection_point[2] <= this->bb_max_[2]) {
+                return true;
+            }
+        }*/
 
     return false;
 }
@@ -558,8 +581,14 @@ intersect_triangle(const Triangle&  _triangle,
     * (`material.shadowable` is already set to false for the sky mesh and true for all other meshes, so you don't have to set it by yourself)
      */
 
+    if(this->hasTexture_ == true) {
+            //texturize
 
-    return true;
+    }
+    else {
+        return true;
+
+    }
 }
 
 
