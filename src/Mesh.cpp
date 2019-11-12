@@ -389,35 +389,31 @@ bool Mesh::intersect_bounding_box(const Ray& _ray) const
     
     // create six planes with normal vectors as other axes
     Plane front = Plane(min_point, vec3(0,0,1));
-    Plane back = Plane(max_point, vec3(0,0,-1));
-    Plane top = Plane(max_point, vec3(0,-1,0));
+    Plane back = Plane(max_point, vec3(0,0,1));
+    Plane top = Plane(max_point, vec3(0,1,0));
     Plane bottom = Plane(min_point, vec3(0,1,0));
     Plane left = Plane(min_point, vec3(1,0,0));
-    Plane right = Plane(max_point, vec3(-1,0,0));
+    Plane right = Plane(max_point, vec3(1,0,0));
 
     vec3 _intersection_point;
     vec3 _intersection_normal;
     vec3 _intersection_diffuse;
     double _intersection_t;
+    bool intersect;
     Plane all_planes[] = {front, back, top, bottom, left, right};
-    
     for (Plane p: all_planes) {
-        bool intersect = p.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
-        //test if inside box
-        // then return true;
+        intersect = p.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
+        // check if plane intersects with ray (not parallel)
         if (intersect == true) {
-            
+            //test if inside box-surface
+            // then return true;
             if (_intersection_point[0] >= this->bb_min_[0] && _intersection_point[0] <= this->bb_max_[0] &&
                 _intersection_point[1] >= this->bb_min_[1] && _intersection_point[1] <= this->bb_max_[1] &&
                 _intersection_point[2] >= this->bb_min_[2] && _intersection_point[2] <= this->bb_max_[2]) {
                 return true;
             }
         } 
-    
-        _intersection_point = vec3(0,0,0);
-        _intersection_normal = vec3(0,0,0);
-        _intersection_diffuse = vec3(0,0,0);
-        _intersection_t = 0.0;
+        intersect = false;
     }
     /*bool intersect = right.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
         //test if inside box
@@ -506,7 +502,7 @@ intersect_triangle(const Triangle&  _triangle,
 {
 
     _intersection_diffuse = material.diffuse;
-    return true;
+    //return true;
     /** \todo
     * Intersect _ray with _triangle:
     * - store intersection point in `_intersection_point`
@@ -549,26 +545,26 @@ intersect_triangle(const Triangle&  _triangle,
     // check if:
     // * 0 <= a, b, c <= 1
     // * a + b + c = 1
-    // _intersectiont_t > 1e-5 (avoid shadow acne)
+    // * _intersectiont_t > 1e-5 (avoid shadow acne)
     if (a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1 && abs(a + b + c - 1) < 1e-5 && _intersection_t > 1e-5) {
         // compute intersection point from ray equation
         _intersection_point = _ray.origin + _intersection_t * _ray.direction;
-
+        
+        _intersection_normal = _triangle.normal;
+        
         // get correct normal depending on _draw_mode
-        if(draw_mode_ == FLAT) {    
+        if(draw_mode_ == FLAT || draw_mode_ == PHONG) {    
             _intersection_normal = _triangle.normal;
         }
         else {
-            //compute_normals
+            //TODO: compute_normals
         }
 
-        return true;
     }
     else {
         return false;
     }
-    
-    
+
     /** \todo
     * Support textured triangles:
     * - `hasTexture_` indicates if the mesh is textured.
@@ -580,16 +576,25 @@ intersect_triangle(const Triangle&  _triangle,
     * Use `material.shadowable` in the `lighting(...)` function to prevent it from being shadowed.
     * (`material.shadowable` is already set to false for the sky mesh and true for all other meshes, so you don't have to set it by yourself)
      */
-
+        // texturize only if hasTexture of Mesh is true AND intersection with triangle 
     if(this->hasTexture_ == true) {
-            //texturize
-
+        // linear interpolation of intersection_point to get correct texture point
+        double texture_u =  (a * u_coordinates_[_triangle.iuv0]) + (b * u_coordinates_[_triangle.iuv1]) + (c * u_coordinates_[_triangle.iuv2]); 
+        double texture_v =  (a * v_coordinates_[_triangle.iuv0]) + (b * v_coordinates_[_triangle.iuv1]) + (c * v_coordinates_[_triangle.iuv2]); 
+        
+        // convert to pixel coordinates       
+        double abs_texture_u = int((texture_.width() - 1) * texture_u);
+        double abs_texture_v = int((texture_.height() - 1) * texture_v);
+        assert(abs_texture_u < texture_.width()); 
+        assert(abs_texture_v < texture_.height()); 
+        //std::cout << "width: " << texture_.width() << " abs_width: " << abs_texture_u << "\n";
+        //std::cout << "height: " << texture_.height() << " abs_height: " << abs_texture_v << "\n";
+        // access texture
+        _intersection_diffuse = texture_(abs_texture_u, abs_texture_v);
     }
-    else {
-        return true;
-
-    }
+    return true;  
 }
+
 
 
 
