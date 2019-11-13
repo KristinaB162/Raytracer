@@ -360,28 +360,6 @@ bool Mesh::intersect_bounding_box(const Ray& _ray) const
     * in `Mesh::compute_bounding_box()`.
     */
 
-    /*
-    // intersect ray with "edges" of bounding box
-    double t_min_x = (this->bb_min_[0] - _ray.origin[0] ) / _ray.direction[0];
-    double t_min_y = (this->bb_min_[1] - _ray.origin[1] ) / _ray.direction[1];
-    double t_min_z = (this->bb_min_[2] - _ray.origin[2] ) / _ray.direction[2];
-    double t_max_x = (this->bb_max_[0] - _ray.origin[0] ) / _ray.direction[0];
-    double t_max_y = (this->bb_max_[1] - _ray.origin[1] ) / _ray.direction[1];
-    double t_max_z = (this->bb_max_[2] - _ray.origin[2] ) / _ray.direction[2];
-
-    //maybe ||?
-    if (t_min_x > t_max_y && t_min_x < t_min_y) {
-        return false;
-    }
-
-    if (t_max_y > t_max_x && t_min_y < t_min_x) {
-        return false;
-    }
-
-    if (t_min_x > t_min_z && t_min_z < t_max_y) {
-        return false;
-    }
-    */
 
     vec3 min_point, max_point;    
     min_point = min(this->bb_min_, this->bb_max_);
@@ -407,25 +385,14 @@ bool Mesh::intersect_bounding_box(const Ray& _ray) const
         if (intersect == true) {
             //test if inside box-surface
             // then return true;
-            if (_intersection_point[0] >= this->bb_min_[0] && _intersection_point[0] <= this->bb_max_[0] &&
-                _intersection_point[1] >= this->bb_min_[1] && _intersection_point[1] <= this->bb_max_[1] &&
-                _intersection_point[2] >= this->bb_min_[2] && _intersection_point[2] <= this->bb_max_[2]) {
+            if (_intersection_point[0] >= (this->bb_min_[0] - 1e-5) && _intersection_point[0] <= (this->bb_max_[0] + 1e-5) &&
+                _intersection_point[1] >= (this->bb_min_[1] - 1e-5) && _intersection_point[1] <= (this->bb_max_[1] + 1e-5) &&
+                _intersection_point[2] >= (this->bb_min_[2] - 1e-5) && _intersection_point[2] <= (this->bb_max_[2] + 1e-5)) {
                 return true;
             }
         } 
         intersect = false;
     }
-    /*bool intersect = right.intersect(_ray, _intersection_point, _intersection_normal, _intersection_diffuse, _intersection_t);
-        //test if inside box
-        // then return true;
-        if (intersect == true) {
-            
-            if (_intersection_point[0] >= this->bb_min_[0] && _intersection_point[0] <= this->bb_max_[0] &&
-                _intersection_point[1] >= this->bb_min_[1] && _intersection_point[1] <= this->bb_max_[1] &&
-                _intersection_point[2] >= this->bb_min_[2] && _intersection_point[2] <= this->bb_max_[2]) {
-                return true;
-            }
-        }*/
 
     return false;
 }
@@ -477,12 +444,13 @@ bool Mesh::intersect(const Ray& _ray,
 
 double compute_determinant(vec3& _x, vec3& _y, vec3& _z){
 
-    double determinant =   (_x[0] * _y[1] * _z[2]) +
-                    (_y[0] * _z[1] * _x[2]) +
-                    (_z[0] * _x[1] * _y[2]) -
-                    (_z[0] * _y[1] * _x[2]) -
-                    (_x[0] * _z[1] * _y[2]) -
-                    (_y[0] * _x[1] * _z[2]);
+    double determinant = dot(_x,cross(_y,_z));
+    // double determinant =   (_x[0] * _y[1] * _z[2]) +
+    //                 (_y[0] * _z[1] * _x[2]) +
+    //                 (_z[0] * _x[1] * _y[2]) -
+    //                 (_z[0] * _y[1] * _x[2]) -
+    //                 (_x[0] * _z[1] * _y[2]) -
+    //                 (_y[0] * _x[1] * _z[2]);
 
     return determinant;
 
@@ -546,7 +514,7 @@ intersect_triangle(const Triangle&  _triangle,
     // * 0 <= a, b, c <= 1
     // * a + b + c = 1
     // * _intersectiont_t > 1e-5 (avoid shadow acne)
-    if (a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1 && abs(a + b + c - 1) < 1e-5 && _intersection_t > 1e-5) {
+    if (a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1 && _intersection_t > 1e-5) {
         // compute intersection point from ray equation
         _intersection_point = _ray.origin + _intersection_t * _ray.direction;
         

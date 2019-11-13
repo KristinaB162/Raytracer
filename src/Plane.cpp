@@ -51,7 +51,7 @@ intersect(const Ray& _ray,
     
     // avoid division by 0 and parallel ray to plane 
     // if normal and ray are perpendicular (dot product 0), then ray is parallel to plane
-    if(abs(denom) > 0.000001) {
+    if(fabs(denom) > 0.000001) {
         // compute intersection
         vec3 diff = this->center - _ray.origin;
         _intersection_t = dot(diff, this->normal) / denom;

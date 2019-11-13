@@ -430,7 +430,7 @@ vec3 lighting(const vec3 &_point, const vec3 &_normal, const vec3 &_view, const 
         double light_distance = distance(light.position, _point);
         bool intersection = intersect_scene(shadow_ray, _intersection_material, _intersection_point, _intersection_normal, _t);
 
-        if (!(intersection == true && _t < light_distance) && _material.shadowable == true) {
+        if (!(intersection == true && _t < light_distance) || _material.shadowable == false) {
             //compute diffuse/specular light ONLY IF no intersection and intersection point is not behind object
             
             //diffuse lighting
@@ -450,6 +450,7 @@ vec3 lighting(const vec3 &_point, const vec3 &_normal, const vec3 &_view, const 
                 color += spec;
             }
         }
+
 
     }
     return color;
