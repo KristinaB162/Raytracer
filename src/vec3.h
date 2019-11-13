@@ -245,6 +245,17 @@ inline std::ostream& operator<<(std::ostream& os, const vec3& v)
     return os;
 }
 
+inline const double length(vec3 a)
+{
+    double length = sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]); 
+    return length;    
+}
+
+inline const double angle(vec3 a, vec3 b)
+{
+    double alpha = acos(dot(a,b)/(length(a)*length(b)));
+    return alpha;
+}
 
 //=============================================================================
 #endif // VEC3_H

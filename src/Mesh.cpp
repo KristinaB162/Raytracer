@@ -305,15 +305,20 @@ void Mesh::compute_normals()
         v.normal = vec3(0,0,0);
     }
 
-    // compute triangle normals
     for (Triangle& t: triangles_)
     {
         const vec3& p0 = vertices_[t.i0].position;
         const vec3& p1 = vertices_[t.i1].position;
         const vec3& p2 = vertices_[t.i2].position;
         t.normal = normalize(cross(p1-p0, p2-p0));
+       
+        vertices_[t.i0].normal += (angle(p1-p0, p2-p0)*t.normal);
+        vertices_[t.i1].normal += (angle(p2-p1, p0-p1)*t.normal);
+        vertices_[t.i2].normal += (angle(p1-p2, p0-p2)*t.normal);              
     }
-
+    
+    for (Vertex& v : vertices_)
+        v.normal = normalize(v.normal);
 }
 
 
@@ -521,14 +526,14 @@ intersect_triangle(const Triangle&  _triangle,
         _intersection_normal = _triangle.normal;
         
         // get correct normal depending on _draw_mode
-        if(draw_mode_ == FLAT || draw_mode_ == PHONG) {    
+        if(draw_mode_ == FLAT ) {    
             _intersection_normal = _triangle.normal;
         }
-        else {
-            //TODO: compute_normals
+        else if (draw_mode_ == PHONG) {
+            std::cout <<" i am here" << std::endl;
+            _intersection_normal = normalize(a* vertices_[_triangle.i0].normal + b * vertices_[_triangle.i1].normal + c * vertices_[_triangle.i2].normal);
         }
-
-    }
+    }   
     else {
         return false;
     }

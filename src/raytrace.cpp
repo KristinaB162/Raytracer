@@ -451,7 +451,6 @@ vec3 lighting(const vec3 &_point, const vec3 &_normal, const vec3 &_view, const 
             }
         }
 
-
     }
     return color;
 }
